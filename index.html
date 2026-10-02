@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmetique - アプリ開発企画書 兼 評価プレゼンテーション</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap');
+        
+        :root {
+            --main-color: #2b2b2b;
+            --bg-color: #F7F7F8;
+            --accent-color: #8f1025; /* 資生堂イメージのブランドレッド */
+            --accent-light: #fff5f6;
+            --accent-border: #f2c2c8;
+            --accent-hover: #730d1e;
+            --border-color: #E2E8F0;
+            --card-bg: #FFFFFF;
+            --text-muted: #64748B;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif JP', serif;
+            background-color: var(--bg-color);
+            color: var(--main-color);
+            line-height: 1.85;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        header {
+            background-color: #FFFFFF;
+            border-bottom: 2px solid var(--accent-border);
+            padding: 45px 20px 35px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-family: 'Playfair Display', serif;
+            color: var(--accent-color);
+            margin: 0 0 10px 0;
+            font-size: 34px;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 15px;
+            color: #475569;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .meta-info {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 12px;
+        }
+
+        .container {
+            max-width: 920px;
+            margin: 40px auto;
+            padding: 0 20px 60px;
+        }
+
+        section {
+            background: var(--card-bg);
+            padding: 36px 40px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 35px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+        }
+
+        h2 {
+            color: var(--accent-color);
+            font-size: 22px;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+            margin-bottom: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        h3 {
+            font-size: 17px;
+            color: var(--main-color);
+            margin-top: 28px;
+            margin-bottom: 14px;
+            border-left: 4px solid var(--accent-color);
+            padding-left: 12px;
+            font-weight: 700;
+        }
+
+        p, li {
+            font-size: 15px;
+            color: #334155;
+        }
+
+        ul, ol {
+            padding-left: 22px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        /* 視覚的強調・メリハリ用パーツ */
+        .marker {
+            background: linear-gradient(transparent 60%, #fde8ea 60%);
+            font-weight: 700;
+            color: #0f172a;
+            padding: 0 2px;
+        }
+
+        .highlight-large {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent-color);
+            line-height: 1.6;
+        }
+
+        .summary-box {
+            background-color: var(--accent-light);
+            border: 1px solid var(--accent-border);
+            border-left: 5px solid var(--accent-color);
+            padding: 18px 22px;
+            border-radius: 8px;
+            margin: 18px 0;
+        }
+
+        .summary-box p {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 600;
+            color: #580a17;
+        }
+
+        /* カードグリッド構造 */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .card-item {
+            background: #fafafa;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 18px;
+        }
+
+        .card-item-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 8px;
+        }
+
+        .card-item-body {
+            font-size: 13.5px;
+            color: #475569;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* 達成率インパクト表示 */
+        .achievement-banner {
+            background: linear-gradient(135deg, #8f1025 0%, #580a17 100%);
+            color: #FFFFFF;
+            padding: 20px 24px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .achievement-banner .score {
+            font-size: 38px;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+            color: #FFD700;
+            letter-spacing: 1px;
+        }
+
+        .achievement-banner p {
+            color: #f8fafc;
+            margin: 4px 0 0;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* 技術タグ */
+        .tech-tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 12px 0;
+        }
+
+        .tech-tag {
+            background-color: #f1f5f9;
+            color: #0f172a;
+            border: 1px solid #cbd5e1;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        /* テーブルデザイン */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 18px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13.5px;
+            text-align: left;
+        }
+
+        th, td {
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 14px;
+            vertical-align: middle;
+        }
+
+        th {
+            background-color: #F8FAFC;
+            color: var(--accent-color);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        td {
+            background-color: #FFFFFF;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge-clear {
+            display: inline-block;
+            background-color: #DCFCE7;
+            color: #15803D;
+            font-size: 11.5px;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        /* プロトタイプ埋め込みコンテナ */
+        .iframe-wrapper {
+            width: 100%;
+            height: 680px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+            background-color: #FFFFFF;
+            margin-top: 16px;
+        }
+
+        .iframe-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .external-link-wrap {
+            text-align: right;
+            margin-top: 14px;
+            font-size: 14px;
+        }
+
+        .external-link {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.2s;
+        }
+
+        .external-link:hover {
+            color: var(--accent-hover);
+            text-decoration: underline;
+        }
+
+        @media screen and (max-width: 600px) {
+            section {
+                padding: 22px 18px;
+            }
+            header h1 {
+                font-size: 26px;
+            }
+            .achievement-banner .score {
+                font-size: 30px;
+            }
+            .iframe-wrapper {
+                height: 520px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Cosmetique - App Proposal & Evaluation</h1>
+    <p>コスメ寿命可視化＆アップサイクル来店予約アプリ（プロトタイプ）総合評価サイト</p>
+    <div class="meta-info">作成日: 2026年9月8日 | 作成者: 花田 諒牙 (Shiseido IT System Proposal)</div>
+</header>
+
+<div class="container">
+
+    <!-- 1. 課題設定（問題提起） -->
+    <section>
+        <h2>1. 課題設定（問題提起）</h2>
+        
+        <div class="summary-box">
+            <p>アプローチ先企業：<strong style="font-size: 17px; color: var(--accent-color);">株式会社資生堂 様</strong></p>
+        </div>
+
+        <h3>社会的・顧客課題（なぜ作るのか）</h3>
+        <p class="highlight-large">
+            アイシャドウパレットの特定色（ベース色）だけが先に無くなり、濃い締め色が残る<span class="marker">「捨て色問題」</span>と使い切れない罪悪感を解決します。
+        </p>
+
+        <div class="card-grid">
+            <div class="card-item">
+                <div class="card-item-title">① 選ぶ疲れの防止</div>
+                <div class="card-item-body">自分に合う色を1から選ぶカスタマイズは顧客の負荷が大きい。既存のお気に入りパレットを活かす施策が必要。</div>
+            </div>
+            <div class="card-item">
+                <div class="card-item-title">② ブランド価値の維持</div>
+                <div class="card-item-body">色が偏って残ることで、プロが計算した綺麗なグラデーションや高級感が損なわれるのを防ぐ。</div>
+            </div>
+            <div class="card-item">
+                <div class="card-item-title">③ 罪悪感の軽減</div>
+                <div class="card-item-body">「残っているのに捨てる」罪悪感をなくし、使い切り＆再利用の心地よい顧客体験を提供する。</div>
+            </div>
+        </div>
+
+        <h3>ターゲットユーザー</h3>
+        <ul>
+            <li><strong>デパコスのアイシャドウパレットを愛用している顧客</strong>（上質な体験を重視）</li>
+            <li><strong>「捨て色」に罪悪感やもったいなさを感じている層</strong>（サステナブル意識層）</li>
+            <li><strong>自分に合ったメイクを長く楽しみたい層</strong></li>
+        </ul>
+    </section>
+
+    <!-- 2. 企画設定 -->
+    <section>
+        <h2>2. 企画設定（プロダクト概要 & ビジネスメリット）</h2>
+        
+        <p class="highlight-large">
+            スマホ上でコスメ残量を視覚的に管理し、使い切り間近のタイミングで<span class="marker">「店舗でのアップサイクル（再加工）」</span>を提案するWebアプリ（MVP）。
+        </p>
+
+        <h3>ビジネスとしての導入メリット（資生堂様への還元価値）</h3>
+        <div class="card-grid">
+            <div class="card-item" style="border-top: 4px solid var(--accent-color);">
+                <div class="card-item-title" style="font-size: 17px;">OMOの推進</div>
+                <div class="card-item-body"><strong>「残量低下通知」を強力なトリガー</strong>にして顧客を実店舗へ誘引。カウンターでの接客・クロスセル機会を自動創出。</div>
+            </div>
+            <div class="card-item" style="border-top: 4px solid var(--accent-color);">
+                <div class="card-item-title" style="font-size: 17px;">サステナビリティ</div>
+                <div class="card-item-body">化粧品廃棄を直接削減。ブランドの環境配慮スタンスを、<strong>顧客が体験・参加できる形</strong>で体現。</div>
+            </div>
+            <div class="card-item" style="border-top: 4px solid var(--accent-color);">
+                <div class="card-item-title" style="font-size: 17px;">LTV（顧客生涯価値）向上</div>
+                <div class="card-item-body">使い切って終わりではなく、<strong>再加工・容器回収・エコポイントを通じて関係性が永続化</strong>。</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. 企画書に対しての達成度 -->
+    <section>
+        <h2>3. 企画書に対しての達成度（全10要件100%クリア）</h2>
+        
+        <div class="achievement-banner">
+            <div>企画書要件 クリア率</div>
+            <div class="score">100% COMPLETE</div>
+            <p>定義したMVP機能スコープ・デザイン・実装ステップ・ビジネス目的 全10項目を完全達成</p>
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 75px;">要件ID</th>
+                        <th style="width: 100px;">大項目</th>
+                        <th>企画書記載の要件・仕様</th>
+                        <th style="width: 65px; text-align: center;">判定</th>
+                        <th style="width: 65px; text-align: center;">達成率</th>
+                        <th>実装成果・対応内容</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>REQ-01</strong></td>
+                        <td>MVP機能</td>
+                        <td>残量ダッシュボード画面（4色パレット等の残量可視化）</td>
+                        <td style="text-align: center;"><span class="badge-clear">クリア</span></td>
+                        <td style="text-align: center;"><strong>100%</strong></td>
+                        <td>index.html / eyeshadow.html等でゲージ表示と残量計算を実装</td>
+                    </tr>
+                    <tr>
+                        <td><strong>REQ-02</strong></td>
+                        <td>MVP機能</td>
+                        <td>テスト用操作ボタン（時間を進めるボタンで減量動作再現）</td>
+                        <td style="text-align: center;"><span class="badge-clear">クリア</span></td>
+                        <td style="text-align: center;"><strong>100%</strong></td>
+                        <td>「1ヶ月進める」ボタンによる動的なゲージ減少ロジックをJSで実装</td>
+                    </tr>
+                    <tr>
+                        <td><strong>REQ-03</strong></td>
+                        <td>MVP機能</td>
+                        <td>アップサイクル提案画面（ゲージ0%時にポップアップ表示）</td>
+                        <td style="text-align: center;"><span class="badge-clear">クリア</span></td>
+                        <td style="text-align: center;"><strong>100%</strong></td>
+                        <td>残量0%検知によるポップアップ発火および提案演出を実装</td>
+                    </tr>
+                    <tr>
+                        <td><strong>REQ-04</strong></td>
+                        <td>MVP機能</td>
+                        <td>店舗予約導線（捨てる罪悪感をなくし来店予約を完了）</td>
+                        <td style="text-align: center;"><span class="badge-clear">クリア</span></td>
+                        <td style="text-align: center;"><strong>100%</strong></td>
+                        <td>ポップアップからの予約導線およびポイント・ランク制度と連携</td>
+                    </tr>
+                    <tr>
+                        <td><strong>REQ-05</strong></td>
+                        <td>UI/UX</td>
+                        <td>シンプル・高級感を意識したデザイン設計（資生堂イメージ）</td>
+                        <td style="text-align: center;"><span class="badge-clear">クリア</span></td>
+                        <td style="text-align: center;"><strong>100%</strong></td>
+                        <td>ブランドカラー（#8f1025）と明朝体・セリフ体フォントを採用</td>
+                    </tr>
+                    <tr>
+                        <td><strong>REQ-06</strong></td>
+                        <td>UI/UX</td>
+                        <td>スマホ幅で美しく表示されるレスポンシブレイアウト</td>
+                        <td style="text-align: center;"><span class="badge-clear">クリア</span></td>
+                        <td style="text-align: center;"><strong>100%</strong></td>
+                        <td>style.cssにてメディアクエリを用いたスマホ最適化レイアウトを実装</td>
+                    </tr>
+                    <tr>
+                        <td><strong>REQ-07</strong></td>
+                        <td>実装</td>
+                        <td>JavaScriptによる残量ゲージ減少および状態判定ロジック</td>
+                        <td style="text-align: center;"><span class="badge-clear">クリア</span></td>
+                        <td style="text-align: center;"><strong>100%</strong></td>
+                        <td>localStorageを用いたデータ保持とリアルタイム更新ロジックを実装</td>
+                    </tr>
+                    <tr>
+                        <td><strong>REQ-08</strong></td>
+                        <td>実装</td>
+                        <td>アニメーション可視化および押しやすいボタンUI</td>
+                        <td style="text-align: center;"><span class="badge-clear">クリア</span></td>
+                        <td style="text-align: center;"><strong>100%</strong></td>
+                        <td>CSS transitionによるゲージアニメーションとモバイル用UI調整を実施</td>
+                    </tr>
+                    <tr>
+                        <td><strong>REQ-09</strong></td>
+                        <td>ビジネス</td>
+                        <td>OMO推進（残量低下通知から実店舗への誘導）</td>
+                        <td style="text-align: center;"><span class="badge-clear">クリア</span></td>
+                        <td style="text-align: center;"><strong>100%</strong></td>
+                        <td>残量低下時の実店舗アップサイクル提案および予約リンクを完備</td>
+                    </tr>
+                    <tr>
+                        <td><strong>REQ-10</strong></td>
+                        <td>ビジネス</td>
+                        <td>サステナビリティ・LTV向上（空き容器回収・エコポイント）</td>
+                        <td style="text-align: center;"><span class="badge-clear">クリア</span></td>
+                        <td style="text-align: center;"><strong>100%</strong></td>
+                        <td>points.html / rank.html にてリサイクル回収（50pt付与）とランク特典を実装</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>【企画書ステップ】開発・実装プロセスの順守</h3>
+        <ol>
+            <li><strong>Step 1 設計:</strong> Figma等を用いたワイヤーフレーム作成 & デザイン設計（シンプル・高級感を意識）。</li>
+            <li><strong>Step 2 静的実装:</strong> HTML/CSSを用いた静的画面コーディング。スマホ幅で美しく表示されるレスポンシブレイアウト。</li>
+            <li><strong>Step 3 動的実装:</strong> JavaScriptによる残量ゲージ減少ロジックと、ベース色使い切り判定のポップアップ表示機能。</li>
+            <li><strong>Step 4 UI/UX向上:</strong> アニメーションによる動的可視化と、タッチしやすいボタンサイズへの最終ブラッシュアップ。</li>
+        </ol>
+    </section>
+
+    <!-- 4. 技術選定の妥当性 -->
+    <section>
+        <h2>4. 技術選定の妥当性（選定理由の透明性）</h2>
+        
+        <p>採用技術スタック：</p>
+        <div class="tech-tags">
+            <span class="tech-tag">HTML5</span>
+            <span class="tech-tag">CSS3</span>
+            <span class="tech-tag">Vanilla JavaScript</span>
+            <span class="tech-tag">Web Storage (localStorage)</span>
+        </div>
+
+        <div class="summary-box">
+            <p><strong>【透明性のある選定理由】</strong><br>
+            MVPプロトタイプとして最も重要な<span class="marker">「視覚的アピール」と「高速かつ低コストな検証」</span>を両立するため、特別な環境構築やアプリインストールが不要なWeb標準技術を採用しました。</p>
+        </div>
+
+        <ul>
+            <li><strong>即時体験性:</strong> バックエンドやDB通信を行わない `localStorage` を活用。評価者がWebブラウザを開くだけで、スタンドアロンでデータ保持と状態遷移をテスト可能。</li>
+            <li><strong>軽量・高レスポンス:</strong> 余計なライブラリに依存せず、ストレスのない高速なアニメーション動作を実現。</li>
+        </ul>
+    </section>
+
+    <!-- 5. 制作物に対する工夫 -->
+    <section>
+        <h2>5. 制作物に対する工夫（アピールポイント）</h2>
+        
+        <div class="card-grid">
+            <div class="card-item">
+                <div class="card-item-title">✨ ブランドの世界観表現</div>
+                <div class="card-item-body">資生堂の品格を表現するため、深い赤（#8f1025）と上質な明朝体フォント（Noto Serif JP）を厳選採用。</div>
+            </div>
+            <div class="card-item">
+                <div class="card-item-title">⚡ 直感的なゲージアニメーション</div>
+                <div class="card-item-body">「1ヶ月進める」操作でCSS transitionが発火。数値とグラフでコスメの減りを体感できるインターフェース。</div>
+            </div>
+            <div class="card-item">
+                <div class="card-item-title">🔄 状態のリアルタイム連動</div>
+                <div class="card-item-body">残量変化や容器回収アクションに応じて、エコポイントや会員ランク（Silver/Gold/Platinum）が連動して変化。</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. サイトの見やすさ -->
+    <section>
+        <h2>6. サイトの見やすさ（レイアウトの質）</h2>
+        
+        <p class="highlight-large">
+            情報量の多さを感じさせない<span class="marker">「洗練されたカラーパレット」と「余裕のある視覚的余白」</span>で構築。
+        </p>
+
+        <ul>
+            <li><strong>カラーパレットの厳選:</strong> チープさを排除するため「白」「ライトグレー」「ダークグレー」を基調とし、アクセントカラーは「資生堂レッド」の1色に凝縮。</li>
+            <li><strong>読みやすさを追求したレスポンシブデザイン:</strong> PC閲覧時だけでなく、スマホ（モバイル）閲覧時でも枠崩れなくストレスなく閲覧可能。</li>
+        </ul>
+    </section>
+
+    <!-- 7. サイトのわかりやすさ -->
+    <section>
+        <h2>7. サイトのわかりやすさ（説明力）</h2>
+        
+        <p class="highlight-large">
+            評価者が上から読むだけで、<span class="marker">企画背景から成果物の動作まで一元理解できる</span>構成力。
+        </p>
+
+        <ul>
+            <li><strong>階層的で迷わない構造:</strong> 評価項目の1〜7に完全連動させた目次構成。</li>
+            <li><strong>視覚的データの可視化:</strong> テキスト長文を避け、表（Table）、サマリーカード、バッジを活用して一目で結論が伝わるレイアウトを採用。</li>
+        </ul>
+    </section>
+
+    <!-- 成果物プロトタイプの直接埋め込み（実機デモ） -->
+    <section style="background-color: #ffffff; border: 2px solid var(--accent-color);">
+        <h2 style="border-bottom-color: var(--accent-border);">成果物プロトタイプ（実機デモ画面）</h2>
+        <p style="font-weight: 600; color: var(--accent-color);">以下の画面内で、実際に動作するプロトタイプアプリを直接テストできます。</p>
+        
+        <div class="iframe-wrapper">
+            <iframe src="https://hanadaryouga.github.io/Leo_noah.github.io/index.html" title="Cosmetique Prototype App"></iframe>
+        </div>
+        
+        <div class="external-link-wrap">
+            <a href="https://hanadaryouga.github.io/Leo_noah.github.io/index.html" target="_blank" rel="noopener noreferrer" class="external-link">
+                ↗ 新しいタブ・ウィンドウでアプリ（GitHub Pages）を開く
+            </a>
+        </div>
+    </section>
+
+</div>
+
+</body>
+</html>
